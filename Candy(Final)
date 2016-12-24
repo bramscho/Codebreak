@@ -53,7 +53,7 @@ lcd.setBacklightPin(BACKLIGHT_PIN,POSITIVE); // Switch on the backlight
 lcd.setBacklight(HIGH
 
 //Stepper 
- pinMode(MS1, OUTPUT);
+   pinMode(MS1, OUTPUT);
    pinMode(MS2, OUTPUT);
    pinMode(dir_pin, OUTPUT);
    pinMode(step_pin, OUTPUT);
@@ -72,7 +72,7 @@ void loop() {
 //LCD
  lcd.setCursor (0,1);        // go to start of 2nd line
  lcd.print("Hello World!");
-//Stepper
+//Stepper X
 while (analogRead(X_pin) >= 0 && analogRead(X_pin) <= 100) {
     if (steps > 0) {
       digitalWrite(dir_pin, HIGH);  // (HIGH = anti-clockwise / LOW = clockwise)
@@ -148,6 +148,85 @@ while (analogRead(X_pin) >= 0 && analogRead(X_pin) <= 100) {
          digitalWrite(step_pin, LOW);
         delay(1);
         steps++; 
+      }
+    }
+//Steoper Y
+while (analogRead(Y_pin) >= 0 && analogRead(Y_pin) <= 100) {
+    if (steps > 0) {
+      digitalWrite(dir_pin, HIGH);  // (HIGH = anti-clockwise / LOW = clockwise)
+      digitalWrite(step_pin, HIGH);
+      delay(1);
+      digitalWrite(step_pin, LOW);
+      delay(1);
+      steps--;
+    }      
+  }
+  
+    while (analogRead(Y_pin) > 100 && analogRead(Y_pin) <= 400) {
+      if (steps < 512) {
+        digitalWrite(dir_pin, LOW);  // (HIGH = anti-clockwise / LOW = clockwise)
+        digitalWrite(step_pin, HIGH);
+        delay(1);
+         digitalWrite(step_pin, LOW);
+        delay(1);
+        steps++;
+      }    
+      if (steps > 512) {
+        digitalWrite(dir_pin, HIGH);
+        digitalWrite(step_pin, HIGH);
+        delay(1);
+         digitalWrite(step_pin, LOW);
+        delay(1);
+        steps--;
+      }
+    }    
+      
+    while (analogRead(Y_pin) > 401 && analogRead(Y_pin) <= 600) {
+      if (steps < 1025) {
+        digitalWrite(dir_pin, LOW);
+        digitalWrite(step_pin, HIGH);
+        delay(1);
+         digitalWrite(step_pin, LOW);
+        delay(1);
+        steps++;
+      }    
+      if (steps > 1025) {
+        digitalWrite(dir_pin, HIGH);
+        digitalWrite(step_pin, HIGH);
+        delay(1);
+         digitalWrite(step_pin, LOW);
+        delay(1);
+        steps--;
+      } 
+    } 
+
+    while (analogRead(Y_pin) > 601 && analogRead(Y_pin) <= 900) {
+      if (steps < 1535) {
+        digitalWrite(dir_pin, LOW);
+        digitalWrite(step_pin, HIGH);
+        delay(1);
+         digitalWrite(step_pin, LOW);
+        delay(1);
+        steps++;
+      }    
+      if (steps > 1535) {
+        digitalWrite(dir_pin, HIGH);
+        digitalWrite(step_pin, HIGH);
+        delay(1);
+         digitalWrite(step_pin, LOW);
+        delay(1);
+        steps--;
+      }    
+    }   
+   
+    while (analogRead(Y_pin) > 900 && analogRead(Y_pin) <= 1024) {
+      if (steps < 2050) {
+        digitalWrite(dir_pin, LOW);
+        digitalWrite(step_pin, HIGH);
+        delay(1);
+         digitalWrite(step_pin, LOW);
+        delay(1);
+        steps++;
       }
     }
 }
