@@ -1,11 +1,153 @@
-//libraries on iMac
+/*
+LCD code thanks to:
+ianbren on forum.arduino.cc 
+
+LCD libraries thanks to:
+F. Malpartida on bitbucket.com
+(License:https://creativecommons.org/licenses/by-sa/3.0/)
+*/
+//LCD
+#include <Wire.h>
+#include "LCD.h"
+#include "LiquidCrystal_I2C.h"
+
+#define I2C_ADDR    0x27 // <<----- Add your address here.  Find it from I2C Scanner
+#define BACKLIGHT_PIN     3
+#define En_pin  2
+#define Rw_pin  1
+#define Rs_pin  0
+#define D4_pin  4
+#define D5_pin  5
+#define D6_pin  6
+#define D7_pin  7
+
+int n = 1;
+
+LiquidCrystal_I2C  lcd(I2C_ADDR,En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin);
+
+//Stepper X
+#define step_pin 1  // Pin 1 connected to steps pin on EasyDriver
+#define dir_pin 2   // Pin 2 connected to direction pin
+#define MS1 3       // Pin 3 connected to MS1 pin
+#define MS2 4       // Pin 4 connected to MS2 pin
+#define SLEEP 5     // Pin 5 connected to SLEEP pin
+#define X_pin A0    // Pin A0 connected to joystick x axis
+
+int directionX;    // Variable to set the direction of the motor
+int steps = 1025; // assumes that the belt clip is in the middle
+
+//Stepper Y
+#define step_pin 6  // Pin 6 connected to steps pin on EasyDriver
+#define dir_pin 7   // Pin 7 connected to direction pin
+#define MS1 8       // Pin 8 connected to MS1 pin
+#define MS2 9       // Pin 9 connected to MS2 pin
+#define SLEEP 10     // Pin 10 connected to SLEEP pin
+#define Y_pin A1    // Pin A1 connected to joystick Y axis
+
+int directionY;    // Variable to set the direction of the motor
 
 void setup() {
-  // put your setup code here, to run once:
+//LCD
+  lcd.begin (16,2);
+lcd.setBacklightPin(BACKLIGHT_PIN,POSITIVE); // Switch on the backlight
+lcd.setBacklight(HIGH
 
+//Stepper 
+ pinMode(MS1, OUTPUT);
+   pinMode(MS2, OUTPUT);
+   pinMode(dir_pin, OUTPUT);
+   pinMode(step_pin, OUTPUT);
+   pinMode(SLEEP, OUTPUT);
+   
+   digitalWrite(SLEEP, HIGH);  // Wake up EasyDriver
+   delay(5);  // Wait for EasyDriver wake up
+
+   digitalWrite(MS1, LOW);      // Configures to Full Steps
+   digitalWrite(MS2, LOW);    // Configures to Full Steps
+ //Stepper Y
+ 
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+//LCD
+ lcd.setCursor (0,1);        // go to start of 2nd line
+ lcd.print("Hello World!");
+//Stepper
+while (analogRead(X_pin) >= 0 && analogRead(X_pin) <= 100) {
+    if (steps > 0) {
+      digitalWrite(dir_pin, HIGH);  // (HIGH = anti-clockwise / LOW = clockwise)
+      digitalWrite(step_pin, HIGH);
+      delay(1);
+      digitalWrite(step_pin, LOW);
+      delay(1);
+      steps--;  literally means set the steps variable to its current value - 1
+    }      
+  }
+  
+    while (analogRead(X_pin) > 100 && analogRead(X_pin) <= 400) {
+      if (steps < 512) {
+        digitalWrite(dir_pin, LOW);  // (HIGH = anti-clockwise / LOW = clockwise)
+        digitalWrite(step_pin, HIGH);
+        delay(1);
+         digitalWrite(step_pin, LOW);
+        delay(1);
+        steps++;  literally means set the steps variable to its current value + 1
+      }    
+      if (steps > 512) {
+        digitalWrite(dir_pin, HIGH);
+        digitalWrite(step_pin, HIGH);
+        delay(1);
+         digitalWrite(step_pin, LOW);
+        delay(1);
+        steps--; 
+    }    
+      
+    while (analogRead(X_pin) > 401 && analogRead(X_pin) <= 600) {
+      if (steps < 1025) {
+        digitalWrite(dir_pin, LOW);
+        digitalWrite(step_pin, HIGH);
+        delay(1);
+         digitalWrite(step_pin, LOW);
+        delay(1);
+        steps++;
+      }    
+      if (steps > 1025) {
+        digitalWrite(dir_pin, HIGH);
+        digitalWrite(step_pin, HIGH);
+        delay(1);
+         digitalWrite(step_pin, LOW);
+        delay(1);
+        steps--; 
+      } 
+    } 
 
+    while (analogRead(X_pin) > 601 && analogRead(X_pin) <= 900) {
+      if (steps < 1535) {
+        digitalWrite(dir_pin, LOW);
+        digitalWrite(step_pin, HIGH);
+        delay(1);
+         digitalWrite(step_pin, LOW);
+        delay(1);
+        steps++;
+      }    
+      if (steps > 1535) {
+        digitalWrite(dir_pin, HIGH);
+        digitalWrite(step_pin, HIGH);
+        delay(1);
+         digitalWrite(step_pin, LOW);
+        delay(1);
+        steps--; 
+      }    
+    }   
+   
+    while (analogRead(X_pin) > 900 && analogRead(X_pin) <= 1024) {
+      if (steps < 2050) {
+        digitalWrite(dir_pin, LOW);
+        digitalWrite(step_pin, HIGH);
+        delay(1);
+         digitalWrite(step_pin, LOW);
+        delay(1);
+        steps++; 
+      }
+    }
 }
