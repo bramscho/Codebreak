@@ -5,7 +5,7 @@
 #define SLEEP 10     // Pin 10 connected to SLEEP pin
 #define Y_pin A1    // Pin A1 connected to joystick Y axis
 
-int direction;    // Variable to set the direction of the motor
+int directionY;    // Variable to set the direction of the motor
 int steps = 1025; // assumes that the belt clip is in the middle
 
 void setup() {
